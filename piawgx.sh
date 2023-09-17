@@ -10,6 +10,7 @@ piauser="./piauser.sh"
 if [ ! -f "$piauser" ]; then
   echo "Error: No $piauser file."
   echo "Creating keys and writing sample $piauser file"
+  VPN_IF="vpn"
   PUB_KEY="yourpubkeyhere"
   PRIV_KEY="yourprivkeyhere"
   umask go= 
@@ -24,6 +25,7 @@ if [ ! -f "$piauser" ]; then
   echo "Check/set firewall config"
 cat << EOF > $piauser
 #see https://openwrt.org/docs/guide-user/services/vpn/wireguard/client
+VPN_IF="$VPN_IF"
 PIA_USER=pxxxxxxx
 PIA_PASS=yourpassword
 PUB_KEY="${PUB_KEY}"
@@ -34,7 +36,6 @@ umask 0022
 exit 1
 fi
 . ./piauser.sh
-VPN_IF="wg0_pia"
 serverlist_url='https://serverlist.piaservers.net/vpninfo/servers/v6'
 all_region_data="$(curl -s $serverlist_url | head -1 )"
 echo "save server list"
